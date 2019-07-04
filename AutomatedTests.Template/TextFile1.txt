@@ -1,0 +1,62 @@
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.IO;
+using System.Reflection;
+using RatesBonds.Feature;
+namespace WhenIOpenBrowserValidatorRowFields
+{
+    [TestFixture]   
+    public class WhenIOpenBrowserValidatorRowFields
+    {   
+            private IWebDriver driver;
+        [SetUp]
+        public void Setup(TestFeature feature)
+        {
+            driver = feature.Driver;
+        }
+
+        [Test]
+        public void Test1()
+        {
+            driver.Navigate().GoToUrl("https://www.bloomberg.com/markets/rates-bonds");
+
+            var GlobalValue = driver.FindElement(By.CssSelector("[data-view-uid] .data-table-row:nth-of-type(1) [data-type='value'] .data-table-row-cell__value,"));
+            var UsValue = driver.FindElement(By.CssSelector());
+            var AsianValue = driver.FindElement(By.CssSelector());
+            var PanValue = driver.FindElement(By.CssSelector());
+            var EmValue = driver.FindElement(By.CssSelector());
+
+
+            Assert.AreEqual(GlobalValue, Is.EqualTo(504.94));
+        }
+    }
+}
+
+____
+
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System;
+using System.IO;
+using System.Reflection;
+
+namespace RatesBonds.Feature
+{
+    public class TestFeature : IDisposable
+    {
+        public IWebDriver Driver { get; private set; }
+
+        public  TestFeature()
+        {
+            Driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+        }
+
+        //TearDown
+        public void Dispose()
+        {
+            Driver.Quit();
+        }
+
+    }
+}
